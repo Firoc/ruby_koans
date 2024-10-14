@@ -30,7 +30,20 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+
+  # Source: https://stackoverflow.com/questions/11603477/ruby-koans-scoring-project
+  # Count how many what
+  clusters = dice.reduce(Hash.new(0)) {|hash, num| hash[num] += 1; hash }
+
+  # Since 1's are special, handle them first
+  ones = clusters.delete(1) || 0
+  score = ones % 3 * 100 + ones / 3 * 1000
+
+  # Then singular 5's
+  score += clusters[5] % 3 * 50
+
+  # Then the triples other than triple-one
+  clusters.reduce(score) {|s, (num, count)| s + count / 3 * num * 100 }
 end
 
 class AboutScoringProject < Neo::Koan

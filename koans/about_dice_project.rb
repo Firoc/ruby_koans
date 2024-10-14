@@ -6,6 +6,30 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #   code ...
 # end
 
+class DiceSet
+
+  # Source: https://stackoverflow.com/questions/41976353/ruby-koans-test-two-different-sets-of-dices-who-have-same-values 
+  # Attribute reader
+  attr_reader :values
+
+  # Initializer
+  # intializes array of values
+  def initialize
+    @values = []
+    @last_values = []
+  end
+
+  # Roll method
+  def roll(dice_amount)
+    while @values == @last_values
+      @values = Array.new(dice_amount) { rand(1..6) }
+    end
+    @last_values = @values
+    @values
+  end
+end
+
+
 class AboutDiceProject < Neo::Koan
   def test_can_create_a_dice_set
     dice = DiceSet.new
